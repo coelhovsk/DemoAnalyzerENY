@@ -4,18 +4,18 @@ from demoparser2 import DemoParser
 
 class DemoC:
     def __init__(self, filepath):
-        self.demo = DemoParser(filepath)  # iniciando variáveis
+        self.demo = DemoParser(filepath)  # starting variables
 
     def data_frame_to_excel(self):
-        self.demo = DemoParser("inferno.dem")  # parsing the demo com o path do arquivo .dem
+        self.demo = DemoParser("inferno.dem")  # parsing the demo with the path of the .dem file
 
-        # diretório de saída dos arquivos
-        output_directory = r"C:\Users\coelh\PycharmProjects\DemoAnalyzerENY\DFExcel"
+        # file output directory
+        output_directory = r"path"
 
-        # verificar se o diretório existe
+        # verify that the directory exists
         os.makedirs(output_directory, exist_ok=True)
 
-        # lista de eventos disponíveis
+        # list of available events
         event_list = ['player_activate', 'hegrenade_detonate', 'round_time_warning', 'bomb_planted',
                       'item_pickup_slerp',
                       'server_cvar', 'flashbang_detonate', 'player_ping', 'cs_intermission', 'cs_win_panel_match',
@@ -32,13 +32,13 @@ class DemoC:
 
         for event in event_list:
             try:
-                # Parse the event (retona um DataFrame)
+                # Parse the event (return a DataFrame)
                 parsed_event = self.demo.parse_event(event)
 
-                # definindo saída do arquivo
+                # defining file output
                 output_file = os.path.join(output_directory, f"{event}.xlsx")
 
-                # salvando o dataframe no formato excel
+                # saving the dataframe in excel format
                 parsed_event.to_excel(output_file, index=False)
 
                 print(f"Saved {event} to {output_file}")
@@ -46,22 +46,22 @@ class DemoC:
                 print(f"An error occurred while processing {event}: {e}")
 
     def start_round(self):
-        freezetime_end = self.demo.parse_event("round_freeze_end")
-        freezetime_end_ticks = []
+        freezetime_end = self.demo.parse_event("round_freeze_end") # parsing round freeze ticks
+        freezetime_end_ticks = [] # creating a list variable that will receive the ticks 
         for tick in range(len(freezetime_end)):
-            freezetime_end_ticks.append(freezetime_end["tick"][tick])
-        return freezetime_end_ticks
+            freezetime_end_ticks.append(freezetime_end["tick"][tick]) # adding ticks values to list
+        return freezetime_end_ticks # returning the list
 
     def end_round(self):
-        round_ended = self.demo.parse_event("round_officially_ended")
-        round_ended_ticks = []
+        round_ended = self.demo.parse_event("round_officially_ended") # parsing round end ticks
+        round_ended_ticks = [] # creating a list variable that will receive the ticks 
         for tick in range(len(round_ended)):
-            if round_ended["tick"][tick] not in round_ended_ticks:
-                round_ended_ticks.append(round_ended["tick"][tick])
-        return round_ended_ticks
+            if round_ended["tick"][tick] not in round_ended_ticks: # filtering duplicated values
+                round_ended_ticks.append(round_ended["tick"][tick]) # adding the unique tick to the list
+        return round_ended_ticks # returning the list
 
 
-demo = DemoC("inferno.dem")
+demo = DemoC("inferno.dem") 
 
 startR_ticks = demo.start_round()
 endR_ticks = demo.end_round()
