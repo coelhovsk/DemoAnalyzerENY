@@ -9,7 +9,7 @@ class DemoC:
     def data_frame_to_excel(self):
         self.demo = DemoParser("inferno.dem")  # parsing the demo with the path of the .dem file
 
-        # file output directory
+        # file output directory a
         output_directory = r"path"
 
         # verify that the directory exists
