@@ -7,8 +7,6 @@ class DemoC:
         self.demo = DemoParser(filepath)  # starting variables
 
     def data_frame_to_excel(self):
-        self.demo = DemoParser("inferno.dem")  # parsing the demo with the path of the .dem file
-
         # file output directory
         output_directory = r"path"
 
